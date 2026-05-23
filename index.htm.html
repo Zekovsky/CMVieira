@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Município de Vieira do Minho — protótipo</title>
+<meta name="description" content="Protótipo do novo portal do Município de Vieira do Minho. Conteúdo de exemplo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   PROTÓTIPO — Município de Vieira do Minho
+   Conteúdo = placeholder. Substituir depois pelo conteúdo real.
+   VÍDEO DE DRONE: colocar ficheiro em  assets/drone.mp4
+   (se não existir, mostra fundo animado elegante automaticamente)
+   ============================================================ */
+:root{
+  --c-primary:#143d59;        /* azul institucional profundo */
+  --c-primary-700:#0f2e44;
+  --c-accent:#b06a3b;         /* terracota / Serra da Cabreira (parcimónia) */
+  --c-accent-soft:#e7d3c1;
+  --c-bg:#faf8f3;             /* areia muito clara */
+  --c-surface:#ffffff;
+  --c-text:#1b2730;
+  --c-muted:#5d6770;
+  --c-border:#e6e1d6;
+  --radius:16px;
+  --radius-sm:10px;
+  --maxw:1240px;
+  --shadow:0 18px 50px -24px rgba(20,61,89,.45);
+  --shadow-sm:0 6px 20px -12px rgba(20,61,89,.35);
+  --font-head:"Fraunces",Georgia,serif;
+  --font-body:"Hanken Grotesk",system-ui,sans-serif;
+  --fs:1rem;                  /* controlado pelo toggle A/A */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  font-size:var(--fs);
+  line-height:1.6;
+  color:var(--c-text);
+  background:var(--c-bg);
+  -webkit-font-smoothing:antialiased;
+}
+/* subtil textura de papel/grão */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+h1,h2,h3,h4{font-family:var(--font-head);line-height:1.08;font-weight:600;letter-spacing:-.01em}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:clamp(1.1rem,4vw,2.4rem)}
+.eyebrow{font-size:.74rem;text-transform:uppercase;letter-spacing:.16em;font-weight:700;color:var(--c-accent)}
+
+/* ---- acessibilidade: skip link + foco ---- */
+.skip{position:absolute;left:-999px;top:0;background:var(--c-primary);color:#fff;padding:.7rem 1.1rem;z-index:100;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--c-accent);outline-offset:2px;border-radius:4px}
+
+/* ---- barra utilitária ---- */
+.util{background:var(--c-primary-700);color:#dfe7ec;font-size:.82rem}
+.util .wrap{display:flex;gap:1.4rem;align-items:center;justify-content:flex-end;padding-block:.45rem;flex-wrap:wrap}
+.util a{text-decoration:none;opacity:.9}
+.util a:hover{opacity:1;text-decoration:underline}
+.aa{display:flex;align-items:center;gap:.35rem;margin-left:.4rem}
+.aa button{background:transparent;border:1px solid #3a5a72;color:#dfe7ec;border-radius:6px;cursor:pointer;line-height:1;padding:.2rem .45rem;font-family:var(--font-body)}
+.aa button[aria-pressed="true"]{background:var(--c-accent);border-color:var(--c-accent);color:#fff}
+.aa .a-sm{font-size:.7rem}.aa .a-md{font-size:.85rem}.aa .a-lg{font-size:1rem}
+
+/* ---- header ---- */
+.site-header{position:sticky;top:0;z-index:40;background:rgba(250,248,243,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--c-border)}
+.site-header .wrap{display:flex;align-items:center;gap:1.5rem;padding-block:.8rem}
+.brand{display:flex;align-items:center;gap:.8rem;text-decoration:none;flex-shrink:0}
+.brand .mark{width:42px;height:42px;border-radius:11px;background:linear-gradient(145deg,var(--c-primary),#1f5a80);display:grid;place-items:center;color:#fff;font-family:var(--font-head);font-weight:700;font-size:1.25rem;box-shadow:var(--shadow-sm)}
+.brand .txt{display:flex;flex-direction:column;line-height:1.05}
+.brand .txt b{font-family:var(--font-head);font-weight:600;font-size:1.06rem;color:var(--c-primary)}
+.brand .txt span{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--c-muted)}
+nav.main{margin-left:auto}
+nav.main ul{display:flex;gap:.3rem;list-style:none}
+nav.main a{text-decoration:none;font-weight:600;font-size:.94rem;padding:.5rem .8rem;border-radius:8px;color:var(--c-text);display:block}
+nav.main a:hover{background:#eee7da;color:var(--c-primary)}
+.search-btn{border:1px solid var(--c-border);background:var(--c-surface);border-radius:30px;padding:.5rem .95rem;display:flex;align-items:center;gap:.5rem;cursor:pointer;font-family:var(--font-body);font-size:.9rem;color:var(--c-muted)}
+.search-btn:hover{border-color:var(--c-primary)}
+.burger{display:none;background:none;border:1px solid var(--c-border);border-radius:9px;padding:.5rem .6rem;cursor:pointer}
+.burger span{display:block;width:20px;height:2px;background:var(--c-primary);margin:4px 0}
+
+/* ---- HERO com vídeo de drone ---- */
+.hero{position:relative;min-height:min(86vh,720px);display:flex;align-items:flex-end;color:#fff;overflow:hidden;isolation:isolate}
+.hero-media{position:absolute;inset:0;z-index:-2}
+.hero-video{width:100%;height:100%;object-fit:cover}
+.hero-fallback{position:absolute;inset:0;
+  background:
+    radial-gradient(120% 80% at 70% 0%,rgba(176,106,59,.35),transparent 55%),
+    linear-gradient(195deg,#1f5a80 0%,#143d59 45%,#0f2e44 100%);
+  background-size:160% 160%;animation:drift 22s ease-in-out infinite}
+.hero-fallback::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(60% 50% at 50% 120%,rgba(0,0,0,.45),transparent)}
+@keyframes drift{0%,100%{background-position:0% 30%}50%{background-position:100% 70%}}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(to top,rgba(11,28,40,.85) 8%,rgba(11,28,40,.25) 55%,rgba(11,28,40,.4) 100%)}
+.hero-note{position:absolute;top:1rem;right:1rem;z-index:2;font-size:.72rem;letter-spacing:.05em;
+  background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.25);padding:.4rem .7rem;border-radius:30px;backdrop-filter:blur(4px)}
+.hero-inner{position:relative;z-index:1;padding-block:3rem 5.5rem}
+.hero .eyebrow{color:var(--c-accent-soft)}
+.hero h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:600;margin:.6rem 0 1rem;max-width:16ch;text-shadow:0 2px 30px rgba(0,0,0,.35)}
+.hero p{max-width:46ch;font-size:1.12rem;color:#eef2f5;margin-bottom:1.8rem}
+.hero-search{display:flex;max-width:560px;background:#fff;border-radius:40px;padding:.4rem .4rem .4rem 1.3rem;box-shadow:var(--shadow)}
+.hero-search input{flex:1;border:0;font-size:1rem;font-family:var(--font-body);color:var(--c-text);background:transparent}
+.hero-search input:focus{outline:none}
+.hero-search button{border:0;background:var(--c-primary);color:#fff;border-radius:32px;padding:.7rem 1.5rem;font-weight:600;cursor:pointer;font-family:var(--font-body)}
+.hero-search button:hover{background:var(--c-accent)}
+
+/* ---- banda de serviços (sobreposta) ---- */
+.tasks{position:relative;z-index:5;margin-top:-3.6rem}
+.tasks .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1rem;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:1.3rem;box-shadow:var(--shadow)}
+.task{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.6rem;text-decoration:none;padding:1rem .5rem;border-radius:var(--radius-sm);transition:.18s}
+.task:hover{background:var(--c-bg);transform:translateY(-3px)}
+.task .ico{width:46px;height:46px;border-radius:13px;background:var(--c-accent-soft);color:var(--c-primary);display:grid;place-items:center}
+.task .ico svg{width:24px;height:24px}
+.task b{font-size:.9rem;color:var(--c-primary);font-weight:600;line-height:1.2}
+
+/* ---- secções ---- */
+section{position:relative;z-index:1;padding-block:clamp(3rem,7vw,5rem)}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--c-primary)}
+.sec-head a.more{text-decoration:none;font-weight:600;color:var(--c-accent);white-space:nowrap}
+.sec-head a.more:hover{text-decoration:underline}
+
+/* notícias */
+.news{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+.card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:.2s}
+.card:hover{box-shadow:var(--shadow);transform:translateY(-4px)}
+.card .thumb{aspect-ratio:16/10;background:linear-gradient(135deg,#cdd8df,#e9e2d6);position:relative}
+.card .thumb::after{content:"imagem";position:absolute;inset:0;display:grid;place-items:center;color:#9aa6ad;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+.card .body{padding:1.3rem 1.4rem 1.6rem;display:flex;flex-direction:column;gap:.6rem;flex:1}
+.card time{font-size:.78rem;color:var(--c-accent);font-weight:700;letter-spacing:.04em}
+.card h3{font-size:1.22rem;color:var(--c-text)}
+.card p{color:var(--c-muted);font-size:.94rem}
+.card .read{margin-top:auto;font-weight:600;color:var(--c-primary);text-decoration:none;font-size:.9rem}
+
+/* eventos + turismo split */
+.split{display:grid;grid-template-columns:1.3fr 1fr;gap:2.4rem;align-items:start}
+.event{display:flex;gap:1.1rem;padding:1.1rem;border:1px solid var(--c-border);border-radius:var(--radius);background:var(--c-surface);margin-bottom:1rem}
+.event .date{flex-shrink:0;width:64px;text-align:center;background:var(--c-primary);color:#fff;border-radius:var(--radius-sm);padding:.6rem 0;font-family:var(--font-head)}
+.event .date b{display:block;font-size:1.5rem;line-height:1}
+.event .date span{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em}
+.event h3{font-size:1.1rem;margin-bottom:.25rem}
+.event small{color:var(--c-muted)}
+.turismo{background:var(--c-primary);color:#fff;border-radius:var(--radius);padding:1.8rem;box-shadow:var(--shadow)}
+.turismo h3{font-size:1.5rem;margin-bottom:1rem}
+.turismo .tg{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.turismo a{display:block;text-decoration:none;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius-sm);padding:.9rem 1rem;font-weight:600;transition:.18s}
+.turismo a:hover{background:var(--c-accent);border-color:var(--c-accent)}
+
+/* acessos + docs */
+.bands{display:grid;grid-template-columns:1fr 1fr;gap:2.4rem}
+.panel{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:1.6rem}
+.panel h3{color:var(--c-primary);font-size:1.35rem;margin-bottom:1.1rem}
+.links{list-style:none;display:flex;flex-wrap:wrap;gap:.7rem}
+.links a{text-decoration:none;border:1px solid var(--c-border);border-radius:30px;padding:.5rem 1rem;font-weight:600;font-size:.9rem;color:var(--c-primary)}
+.links a:hover{background:var(--c-primary);color:#fff;border-color:var(--c-primary)}
+.docs{list-style:none}
+.docs li{display:flex;justify-content:space-between;gap:1rem;padding:.85rem 0;border-bottom:1px solid var(--c-border)}
+.docs li:last-child{border-bottom:0}
+.docs a{text-decoration:none;font-weight:600;color:var(--c-text)}
+.docs a:hover{color:var(--c-accent)}
+.docs time{color:var(--c-muted);font-size:.82rem;white-space:nowrap}
+
+/* contactos */
+.contact{background:var(--c-primary-700);color:#dfe7ec}
+.contact .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.contact h4{font-family:var(--font-head);color:#fff;font-size:1.15rem;margin-bottom:.6rem}
+.contact a{color:var(--c-accent-soft)}
+
+/* footer */
+footer.site{background:#0b1c28;color:#9fb0bd;padding-block:2.6rem;font-size:.9rem}
+footer.site .badges{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-bottom:1.6rem}
+footer.site .badge{border:1px dashed #35506280;border-radius:8px;padding:.6rem 1rem;font-size:.74rem;letter-spacing:.04em;color:#7d93a3}
+footer.site .row{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-top:1px solid #1c3344;padding-top:1.3rem}
+footer.site a{color:#bcd; text-decoration:none}
+footer.site a:hover{text-decoration:underline}
+
+/* ============ SUBPÁGINAS (hash routing) ============ */
+.view{display:none}
+.view.is-active{display:block;animation:viewIn .45s ease both}
+@keyframes viewIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* breadcrumb */
+.breadcrumb{font-size:.85rem;color:var(--c-muted);padding-top:1.5rem}
+.breadcrumb a{color:var(--c-primary);text-decoration:none;font-weight:600}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb .sep{margin:0 .5rem;color:#b9c0c6}
+.breadcrumb [aria-current]{color:var(--c-muted);font-weight:600}
+
+/* cabeçalho de subpágina */
+.page-head{padding-top:1.1rem;margin-bottom:2rem}
+.page-head h1{font-size:clamp(2rem,4vw,3rem);color:var(--c-primary);margin-top:.4rem;outline:none}
+
+/* prosa */
+.prose{max-width:68ch;font-size:1.05rem;color:var(--c-text)}
+.prose p{margin-bottom:1.15rem}
+.prose ul{margin:0 0 1.3rem 1.2rem}
+.prose li{margin-bottom:.55rem}
+
+/* layout concelho: sidebar + conteúdo */
+.concelho-layout{display:grid;grid-template-columns:248px 1fr;gap:2.6rem;align-items:start;padding-bottom:4rem}
+.side-menu{position:sticky;top:90px;border:1px solid var(--c-border);border-radius:var(--radius);background:var(--c-surface);padding:.7rem;box-shadow:var(--shadow-sm)}
+.side-menu p{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;font-weight:700;color:var(--c-muted);padding:.65rem .85rem .4rem}
+.side-menu a{display:block;text-decoration:none;padding:.65rem .85rem;border-radius:9px;font-weight:600;color:var(--c-text);font-size:.95rem}
+.side-menu a:hover{background:var(--c-bg);color:var(--c-primary)}
+.side-menu a.active{background:var(--c-primary);color:#fff}
+
+/* cards de navegação 2x2 */
+.concelho-landing{padding-bottom:4rem}
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;max-width:760px;margin-top:2.2rem}
+.nav-card{display:flex;align-items:center;justify-content:space-between;gap:1rem;text-decoration:none;border:1px solid var(--c-border);background:var(--c-surface);border-radius:var(--radius);padding:1.5rem 1.7rem;transition:.2s}
+.nav-card:hover{box-shadow:var(--shadow);transform:translateY(-4px);border-color:var(--c-primary)}
+.nav-card b{font-family:var(--font-head);font-size:1.3rem;color:var(--c-primary);font-weight:600}
+.nav-card .arw{color:var(--c-accent);font-weight:700;font-size:1.2rem}
+
+/* freguesias */
+.freg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.8rem}
+.freg{border:1px solid var(--c-border);background:var(--c-surface);border-radius:var(--radius-sm);padding:.95rem 1rem;font-weight:600;color:var(--c-primary);text-align:center;transition:.18s}
+.freg:hover{background:var(--c-accent-soft);border-color:var(--c-accent)}
+
+/* tabela de festas */
+.tbl{width:100%;border-collapse:collapse;font-size:.96rem;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);overflow:hidden}
+.tbl th,.tbl td{text-align:left;padding:.8rem 1.05rem;border-bottom:1px solid var(--c-border)}
+.tbl thead th{background:var(--c-primary);color:#fff;font-weight:600;font-size:.85rem;letter-spacing:.03em}
+.tbl tbody tr:nth-child(even){background:var(--c-bg)}
+.tbl tbody tr:last-child td{border-bottom:0}
+
+/* accordion património */
+.acc{border:1px solid var(--c-border);border-radius:var(--radius);overflow:hidden;background:var(--c-surface);margin-bottom:.9rem}
+.acc summary{cursor:pointer;list-style:none;padding:1.1rem 1.4rem;font-family:var(--font-head);font-weight:600;font-size:1.15rem;color:var(--c-primary);display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"+";font-size:1.5rem;line-height:1;color:var(--c-accent);transition:.2s;flex-shrink:0}
+.acc[open] summary::after{transform:rotate(45deg)}
+.acc .acc-body{padding:0 1.4rem 1.35rem;color:var(--c-text);max-width:72ch;line-height:1.65}
+.acc .acc-body .meta{display:block;margin-top:.7rem;font-size:.82rem;color:var(--c-muted);font-style:italic}
+
+/* botão voltar */
+.back{display:inline-flex;align-items:center;gap:.45rem;margin-top:2.4rem;text-decoration:none;font-weight:600;color:var(--c-primary);border:1px solid var(--c-border);border-radius:30px;padding:.6rem 1.25rem;transition:.18s}
+.back:hover{background:var(--c-primary);color:#fff;border-color:var(--c-primary)}
+
+@media(max-width:880px){
+  .concelho-layout{grid-template-columns:1fr;gap:1.4rem}
+  .side-menu{position:static;display:flex;flex-wrap:wrap;gap:.4rem}
+  .side-menu p{width:100%}
+  .nav-cards{grid-template-columns:1fr}
+}
+
+/* logo no menu */
+.brand img{height:54px;width:auto;display:block}
+
+/* cards de navegação com ícone + variação 3 colunas */
+.nav-card .lc{display:flex;align-items:center;gap:.85rem}
+.nav-card .ic{font-size:1.45rem;line-height:1}
+.nav-cards.cols-3{grid-template-columns:repeat(3,1fr);max-width:none}
+
+/* grelha de info-cards (serviços, equipamentos, gastronomia, roteiro) */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:1.2rem;margin-top:1.6rem}
+.info-card{border:1px solid var(--c-border);background:var(--c-surface);border-radius:var(--radius);padding:1.4rem 1.5rem}
+.info-card .ic{font-size:1.6rem;line-height:1;display:block;margin-bottom:.55rem}
+.info-card h3{font-size:1.12rem;color:var(--c-primary);margin-bottom:.45rem}
+.info-card p{color:var(--c-muted);font-size:.93rem;line-height:1.55}
+
+/* factos / chips */
+.facts{list-style:none;display:grid;gap:.6rem;margin-top:1.3rem;max-width:520px}
+.facts li{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius-sm);padding:.75rem 1.05rem;font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem}
+.chip{border:1px solid var(--c-border);background:var(--c-surface);border-radius:30px;padding:.5rem 1.05rem;font-weight:600;color:var(--c-primary);font-size:.9rem}
+
+/* lista a) b) c) sem marcador */
+.prose ul.plain{list-style:none;margin-left:0}
+.prose ul.plain li{padding-left:0}
+
+/* placeholder "em atualização" */
+.ph-note{background:var(--c-surface);border:1px dashed var(--c-border);border-radius:var(--radius);padding:2.6rem 1.5rem;text-align:center;color:var(--c-muted);font-size:1.05rem;margin-top:1.4rem}
+
+/* newsletter no rodapé */
+footer.site .newsletter{display:grid;grid-template-columns:1fr auto;gap:1.4rem;align-items:center;background:#0f2533;border:1px solid #1c3344;border-radius:var(--radius);padding:1.5rem 1.7rem;margin-bottom:1.8rem}
+footer.site .newsletter h3{font-family:var(--font-head);color:#fff;font-size:1.3rem;margin-bottom:.2rem}
+footer.site .newsletter p{color:#9fb0bd;font-size:.9rem;max-width:52ch}
+.nl-form{display:flex;gap:.5rem;background:#fff;border-radius:40px;padding:.35rem .35rem .35rem 1.1rem;min-width:min(420px,86vw)}
+.nl-form input{flex:1;border:0;background:transparent;font-family:var(--font-body);font-size:.95rem;color:var(--c-text)}
+.nl-form input:focus{outline:none}
+.nl-form button{border:0;background:var(--c-accent);color:#fff;border-radius:32px;padding:.65rem 1.4rem;font-weight:600;cursor:pointer;font-family:var(--font-body);white-space:nowrap}
+.nl-form button:hover{background:#1f5a80}
+@media(max-width:760px){footer.site .newsletter{grid-template-columns:1fr}.nl-form{min-width:0}}
+@media(max-width:880px){.nav-cards.cols-3{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.nav-cards.cols-3{grid-template-columns:1fr}.brand img{height:44px}}
+
+/* reduced motion */
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;scroll-behavior:auto!important;transition:none!important}
+  .hero-video{display:none}
+}
+/* responsivo */
+@media(max-width:980px){
+  nav.main{display:none}
+  .burger{display:block;margin-left:auto}
+  .tasks .grid{grid-template-columns:repeat(3,1fr)}
+  .news{grid-template-columns:1fr 1fr}
+  .split,.bands,.contact .grid{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .tasks .grid{grid-template-columns:repeat(2,1fr)}
+  .news{grid-template-columns:1fr}
+  .util .wrap{justify-content:center}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Saltar para o conteúdo principal</a>
+
+<!-- barra utilitária + acessibilidade -->
+<div class="util"><div class="wrap">
+  <a href="#">Balcão Virtual</a>
+  <a href="#">Mapa do Portal</a>
+  <a href="#">Contactos</a>
+  <span class="aa" role="group" aria-label="Tamanho do texto">
+    Texto:
+    <button class="a-sm" data-fs="0.9" aria-pressed="false" aria-label="Texto pequeno">A</button>
+    <button class="a-md" data-fs="1" aria-pressed="true" aria-label="Texto normal">A</button>
+    <button class="a-lg" data-fs="1.14" aria-pressed="false" aria-label="Texto grande">A</button>
+  </span>
+</div></div>
+
+<!-- header -->
+<header class="site-header"><div class="wrap">
+  <a class="brand" href="#home">
+    <img src="assets/logo.png" alt="Município de Vieira do Minho — início">
+  </a>
+  <nav class="main" aria-label="Navegação principal">
+    <ul>
+      <li><a href="#concelho">Concelho</a></li>
+      <li><a href="#orgaos">Órgãos Municipais</a></li>
+      <li><a href="#municipio">Município</a></li>
+      <li><a href="#">Balcão Virtual</a></li>
+      <li><a href="#turismo">Turismo</a></li>
+      <li><a href="#">Contactos</a></li>
+    </ul>
+  </nav>
+  <button class="search-btn" aria-label="Pesquisar no portal">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    Pesquisar
+  </button>
+  <button class="burger" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</div></header>
+
+<main id="main">
+<div class="view" id="view-home" data-route="home">
+
+  <!-- HERO com vídeo de drone -->
+  <section class="hero" aria-label="Destaque">
+    <div class="hero-media">
+      <!-- Coloca o vídeo em assets/drone.mp4. Sem vídeo, mostra fundo animado. -->
+      <video class="hero-video" autoplay muted loop playsinline onerror="this.style.display='none'">
+        <source src="assets/drone.mp4" type="video/mp4">
+      </video>
+      <div class="hero-fallback" aria-hidden="true"></div>
+    </div>
+    <span class="hero-note">Espaço reservado · vídeo aéreo (drone)</span>
+    <div class="wrap hero-inner">
+      <h1>Vieira do Minho</h1>
+      <p class="slogan" style="font-family:var(--font-head);font-style:italic;font-weight:500;font-size:clamp(1.7rem,3.6vw,2.6rem);color:#fff;margin:.2rem 0 1.9rem;text-shadow:0 2px 24px rgba(0,0,0,.4)">Gente que faz.</p>
+      <form class="hero-search" role="search" onsubmit="return false">
+        <input type="search" placeholder="O que procura? Ex.: requerimentos, taxas, eventos…" aria-label="Pesquisar">
+        <button type="submit">Pesquisar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- banda de serviços ao cidadão -->
+  <div class="wrap tasks">
+    <div class="grid" role="list" aria-label="Serviços rápidos">
+      <a class="task" href="#" role="listitem"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span><b>Requerimentos</b></a>
+      <a class="task" href="#" role="listitem"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></span><b>Taxas e Tarifas</b></a>
+      <a class="task" href="#" role="listitem"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.5C8 7 6 10 6 13a6 6 0 0 0 12 0c0-3-2-6-6-10.5Z"/></svg></span><b>Serviços de Água</b></a>
+      <a class="task" href="#" role="listitem"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z"/><path d="M12 7v5l3 2"/></svg></span><b>Atendimento Online</b></a>
+      <a class="task" href="#" role="listitem"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></span><b>Queimas/Queimadas</b></a>
+      <a class="task" href="#" role="listitem"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></span><b>Reclamações</b></a>
+    </div>
+  </div>
+
+  <!-- notícias -->
+  <section class="wrap" aria-label="Notícias">
+    <div class="sec-head">
+      <div><p class="eyebrow">Atualidade</p><h2>Notícias &amp; Destaques</h2></div>
+      <a class="more" href="#">Ver todas as notícias →</a>
+    </div>
+    <div class="news">
+      <article class="card"><div class="thumb"></div><div class="body"><time>20 Mai 2026</time><h3>Título da notícia em destaque (exemplo)</h3><p>Resumo de exemplo da notícia. Este texto será substituído pelo conteúdo real extraído do site atual.</p><a class="read" href="#">Ler notícia +</a></div></article>
+      <article class="card"><div class="thumb"></div><div class="body"><time>19 Mai 2026</time><h3>Segunda notícia de exemplo</h3><p>Resumo de exemplo da notícia. Estrutura pronta para o conteúdo institucional do município.</p><a class="read" href="#">Ler notícia +</a></div></article>
+      <article class="card"><div class="thumb"></div><div class="body"><time>18 Mai 2026</time><h3>Terceira notícia de exemplo</h3><p>Resumo de exemplo da notícia. O layout adapta-se a qualquer quantidade de conteúdo.</p><a class="read" href="#">Ler notícia +</a></div></article>
+    </div>
+  </section>
+
+  <!-- eventos + turismo -->
+  <section class="wrap" aria-label="Eventos e turismo">
+    <div class="split">
+      <div>
+        <div class="sec-head"><div><p class="eyebrow">Agenda</p><h2>Próximos Eventos</h2></div><a class="more" href="#">Ver agenda →</a></div>
+        <div class="event"><div class="date"><b>06</b><span>Jun</span></div><div><h3>Evento de exemplo</h3><small>Local de exemplo · 10h00 às 22h00 · Entrada gratuita</small></div></div>
+        <div class="event"><div class="date"><b>10</b><span>Mai</span></div><div><h3>Outro evento de exemplo</h3><small>Local de exemplo · 07h00 às 17h00</small></div></div>
+        <div class="event"><div class="date"><b>30</b><span>Jan</span></div><div><h3>Mais um evento de exemplo</h3><small>Local de exemplo · 10h00 às 22h00</small></div></div>
+      </div>
+      <div>
+        <div class="sec-head"><div><p class="eyebrow">Descobrir</p><h2>Turismo</h2></div></div>
+        <div class="turismo">
+          <h3>Visite Vieira do Minho</h3>
+          <div class="tg">
+            <a href="#">Conhecer</a><a href="#">Ficar</a><a href="#">Viver</a><a href="#">Fazer</a><a href="#">Onde Comer</a><a href="#">Artesanato</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- contactos -->
+  <section class="contact" aria-label="Contactos">
+    <div class="wrap grid">
+      <div><h4>Morada</h4>Praça (morada de exemplo)<br>4850-XXX Vieira do Minho<br><a href="#">Ver no mapa</a></div>
+      <div><h4>Horário</h4>Segunda a sexta<br>09h00 às 17h30</div>
+      <div><h4>Contactos</h4>T. <a href="#">253 000 000</a><br><a href="#">geral@cm-vminho.pt</a></div>
+    </div>
+  </section>
+</div><!-- /view-home -->
+
+<!-- ===================== CONCELHO (landing) ===================== -->
+<div class="view" id="view-concelho" data-route="concelho">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação">
+      <a href="#home">Início</a><span class="sep">›</span><span aria-current="page">Concelho</span>
+    </nav>
+    <div class="page-head"><p class="eyebrow">O Concelho</p><h1 tabindex="-1">Vieira do Minho</h1></div>
+    <div class="prose">
+      <p>Vieira do Minho é o segundo concelho mais montanhoso do distrito de Braga. Ocupa uma área de 218,05 quilómetros quadrados, sendo limitado a norte por Amares, Terras de Bouro e Montalegre, a nascente por Montalegre e Cabeceiras de Basto, a sul por Fafe e a poente pela Póvoa de Lanhoso. A sua população ronda os 12 997 habitantes segundo os Censos de 2011.</p>
+      <p>As serras do Merouço, Gerês e, sobretudo, a Cabreira caracterizam e constituem a paisagem envolvente. Os rios Cávado e Ave, com seus afluentes, providenciam locais de grande beleza natural. As Barragens existentes no concelho constituem uma grande fonte de riqueza para o país, pela produção de energia hidroeléctrica.</p>
+    </div>
+    <div class="nav-cards">
+      <a class="nav-card" href="#historia"><b>História</b><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#freguesias"><b>Freguesias</b><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#festas"><b>Festas e Romarias</b><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#patrimonio"><b>Património Arqueológico</b><span class="arw" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== HISTÓRIA ===================== -->
+<div class="view" id="view-historia" data-route="historia">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação">
+      <a href="#home">Início</a><span class="sep">›</span><a href="#concelho">Concelho</a><span class="sep">›</span><span aria-current="page">História</span>
+    </nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Secção Concelho">
+        <p>Concelho</p>
+        <a href="#historia" class="active" aria-current="page">História</a>
+        <a href="#freguesias">Freguesias</a>
+        <a href="#festas">Festas e Romarias</a>
+        <a href="#patrimonio">Património Arqueológico</a>
+      </aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Concelho</p><h1 tabindex="-1">História</h1></div>
+        <div class="prose">
+          <p>De origem antiga, como o atestam inúmeros elementos arqueológicos, as freguesias que atualmente integram Vieira pertenceram antigamente a vários concelhos, termos, coutos e vilas, hoje extintos:</p>
+          <ul>
+            <li>Caniçada, Cova, Salamonde, Soengas e Ventosa pertenceram ao concelho de Ribeira de Soás, deu-lhe foral D. Manuel em 1515</li>
+            <li>Parada de Bouro foi pertença do Couto de Parada de Bouro, criado por D. Sancho I</li>
+            <li>Cantelães, Eira Vedra, Mosteiro, Pinheiro, Tabuaças, Vieira e Vilarchão compunham o concelho de Vieira</li>
+            <li>Anjos e Rossas pertenceram ao concelho de Rossas, a quem D. Manuel concedeu foral em 1514</li>
+            <li>Guilhofrei pertenceu ao concelho de Vila Boa da Roda, com foral de 1514</li>
+            <li>Soutelo e Louredo pertenciam ao Concelho de Lanhoso, com foral dado por D. Dinis em 1292</li>
+          </ul>
+          <p>A antiguidade da ocupação humana pode ser atestada pelos inúmeros testemunhos arqueológicos, com particular destaque para a área da Serra da Cabreira, território ocupado desde a pré-história. As mamoas, menires, gravuras rupestres, fojos medievais, necrópoles neolíticas, povoações romanas e castros são exemplos do filão arqueológico da região.</p>
+          <p>Da época romana existem vestígios de alguns troços da via XVII do itinerário Antonino que ligava Braga e Chaves a Astorga. Na Primavera de 1809, o concelho foi atravessado pelas tropas do marechal Soult. Em abril de 1846, Vieira envolveu-se no movimento popular da "Maria da Fonte", que teve aqui a sua origem, com o seu mentor: Padre Casimiro José Vieira.</p>
+          <p>A constituição da sede de concelho foi definida pelo Decreto-Lei Nº22593 de 29-05-1933, no lugar de Brancelhe.</p>
+        </div>
+        <a class="back" href="#concelho">← Voltar ao Concelho</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FREGUESIAS ===================== -->
+<div class="view" id="view-freguesias" data-route="freguesias">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação">
+      <a href="#home">Início</a><span class="sep">›</span><a href="#concelho">Concelho</a><span class="sep">›</span><span aria-current="page">Freguesias</span>
+    </nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Secção Concelho">
+        <p>Concelho</p>
+        <a href="#historia">História</a>
+        <a href="#freguesias" class="active" aria-current="page">Freguesias</a>
+        <a href="#festas">Festas e Romarias</a>
+        <a href="#patrimonio">Património Arqueológico</a>
+      </aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Concelho</p><h1 tabindex="-1">Freguesias</h1></div>
+        <div class="freg-grid">
+          <div class="freg">Anissó</div>
+          <div class="freg">Anjos</div>
+          <div class="freg">Campos</div>
+          <div class="freg">Caniçada</div>
+          <div class="freg">Cantelães</div>
+          <div class="freg">Eira Vedra</div>
+          <div class="freg">Guilhofrei</div>
+          <div class="freg">Louredo</div>
+          <div class="freg">Mosteiro</div>
+          <div class="freg">Parada de Bouro</div>
+          <div class="freg">Pinheiro</div>
+          <div class="freg">Rossas</div>
+          <div class="freg">Ruivães</div>
+          <div class="freg">Salamonde</div>
+          <div class="freg">Soengas</div>
+          <div class="freg">Soutelo</div>
+          <div class="freg">Tabuaças</div>
+          <div class="freg">Ventosa</div>
+          <div class="freg">Vieira do Minho</div>
+          <div class="freg">Vilarchão</div>
+        </div>
+        <a class="back" href="#concelho">← Voltar ao Concelho</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FESTAS E ROMARIAS ===================== -->
+<div class="view" id="view-festas" data-route="festas">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação">
+      <a href="#home">Início</a><span class="sep">›</span><a href="#concelho">Concelho</a><span class="sep">›</span><span aria-current="page">Festas e Romarias</span>
+    </nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Secção Concelho">
+        <p>Concelho</p>
+        <a href="#historia">História</a>
+        <a href="#freguesias">Freguesias</a>
+        <a href="#festas" class="active" aria-current="page">Festas e Romarias</a>
+        <a href="#patrimonio">Património Arqueológico</a>
+      </aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Concelho</p><h1 tabindex="-1">Festas e Romarias</h1></div>
+        <div class="prose">
+          <p>O concelho de Vieira do Minho é terra de tradição religiosa. São anunciadas pelo troar dos foguetes no céu azul. As festas, feiras e romarias são uma tradição que faz parte da nossa identificação. Uma devoção a um determinado Santo faz com que tudo gire a sua volta. Não há aldeia que se preze que não tenha padroeiro: São Pedro, São Tiago, Santa Ana, São António, Santa Luzia. Por tradição as festas iniciam-se em Maio e terminam em Setembro.</p>
+        </div>
+        <table class="tbl">
+          <thead><tr><th scope="col">Freguesia</th><th scope="col">Festa</th><th scope="col">Data</th></tr></thead>
+          <tbody>
+            <tr><td>Anissó</td><td>Sra. da Esperança</td><td>2º Domingo de agosto</td></tr>
+            <tr><td>Anissó</td><td>Sagrado Coração de Jesus</td><td>Último Domingo de junho</td></tr>
+            <tr><td>Anjos</td><td>Santo António</td><td>13 de junho</td></tr>
+            <tr><td>Campos</td><td>São Pedro</td><td>29 de junho</td></tr>
+            <tr><td>Caniçada</td><td>Nossa Sra. do Amparo</td><td>Agosto</td></tr>
+            <tr><td>Cantelães</td><td>São Mamede</td><td>Agosto</td></tr>
+            <tr><td>Guilhofrei</td><td>São João Baptista</td><td>24 de junho</td></tr>
+            <tr><td>Mosteiro</td><td>São Bento</td><td>Julho</td></tr>
+            <tr><td>Parada de Bouro</td><td>Santiago Apóstolo</td><td>25 de julho</td></tr>
+            <tr><td>Rossas</td><td>São Bartolomeu</td><td>Agosto</td></tr>
+            <tr><td>Ruivães</td><td>São Cristóvão</td><td>Julho</td></tr>
+            <tr><td>Vieira do Minho</td><td>Nossa Sra. da Assunção</td><td>15 de agosto</td></tr>
+          </tbody>
+        </table>
+        <a class="back" href="#concelho">← Voltar ao Concelho</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PATRIMÓNIO ARQUEOLÓGICO ===================== -->
+<div class="view" id="view-patrimonio" data-route="patrimonio">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação">
+      <a href="#home">Início</a><span class="sep">›</span><a href="#concelho">Concelho</a><span class="sep">›</span><span aria-current="page">Património Arqueológico</span>
+    </nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Secção Concelho">
+        <p>Concelho</p>
+        <a href="#historia">História</a>
+        <a href="#freguesias">Freguesias</a>
+        <a href="#festas">Festas e Romarias</a>
+        <a href="#patrimonio" class="active" aria-current="page">Património Arqueológico</a>
+      </aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Concelho</p><h1 tabindex="-1">Património Arqueológico</h1></div>
+
+        <details class="acc" open>
+          <summary>Fojos da Cabreira — Armadilhas de caça</summary>
+          <div class="acc-body">
+            O conjunto monumental designado por Fojos da Cabreira situa-se na linha de cumeada formada por Cortegacinhas, Alto do Seixo, Pau da Bela e Trovão, implantando-se na vertente Sul. A sua área abrange as freguesias de Anjos, Ruivães, Rossas, Campos e Vilarchão. O conjunto é constituído por três construções independentes, cada uma formada por dois paredões que convergem para um poço, configurando uma planta em V. São armadilhas de caça para captura do lobo — a batida era feita a partir da base da vertente, em direção aos fojos, onde os lobos eram aprisionados e abatidos.
+            <span class="meta">Cronologia: finais do século XVII a segunda década do século XX.</span>
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary>Cabanas da Serradela</summary>
+          <div class="acc-body">
+            Estruturas habitacionais temporárias relacionadas com a pastorícia sazonal na Serra da Cabreira, testemunho do modo de vida tradicional das populações serranas.
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary>Via XVII Romana</summary>
+          <div class="acc-body">
+            Troços da via XVII do Itinerário Antonino que ligava Braga (Bracara Augusta) e Chaves a Astorga. Exemplo: o povoado romano de S. Cristóvão em Ruivães.
+          </div>
+        </details>
+
+        <details class="acc">
+          <summary>Gravuras Rupestres da Cabreira</summary>
+          <div class="acc-body">
+            Pedras com gravuras e inscrições de épocas pré-históricas localizadas na Serra da Cabreira, parte do vasto filão arqueológico da região, com mamoas, menires e necrópoles neolíticas.
+          </div>
+        </details>
+
+        <a class="back" href="#concelho">← Voltar ao Concelho</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ===================== ÓRGÃOS MUNICIPAIS ===================== -->
+<div class="view" id="view-orgaos" data-route="orgaos">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><span aria-current="page">Órgãos Municipais</span></nav>
+    <div class="page-head"><p class="eyebrow">Órgãos Municipais</p><h1 tabindex="-1">Órgãos Municipais</h1></div>
+    <div class="prose"><p>Conheça melhor os órgãos municipais, nomeadamente, a Câmara Municipal, o Órgão Executivo Colegial e a Assembleia Municipal, o seu órgão deliberativo.</p></div>
+    <div class="nav-cards">
+      <a class="nav-card" href="#camara"><span class="lc"><span class="ic" aria-hidden="true">🏛️</span><b>Câmara Municipal</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#assembleia"><span class="lc"><span class="ic" aria-hidden="true">📋</span><b>Assembleia Municipal</b></span><span class="arw" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-camara" data-route="camara">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#orgaos">Órgãos Municipais</a><span class="sep">›</span><span aria-current="page">Câmara Municipal</span></nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Câmara Municipal"><p>Câmara Municipal</p><a href="#presidente">Presidente</a><a href="#vereacao">Vereação</a><a href="#competencias-camara">Competências</a></aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Órgãos Municipais</p><h1 tabindex="-1">Câmara Municipal</h1></div>
+        <div class="prose"><p>A Câmara Municipal é o órgão executivo colegial do município de Vieira do Minho, eleito pelos cidadãos eleitores recenseados na sua área.</p></div>
+        <div class="nav-cards cols-3">
+          <a class="nav-card" href="#presidente"><span class="lc"><span class="ic" aria-hidden="true">👤</span><b>Presidente</b></span><span class="arw" aria-hidden="true">→</span></a>
+          <a class="nav-card" href="#vereacao"><span class="lc"><span class="ic" aria-hidden="true">🤝</span><b>Vereação</b></span><span class="arw" aria-hidden="true">→</span></a>
+          <a class="nav-card" href="#competencias-camara"><span class="lc"><span class="ic" aria-hidden="true">📄</span><b>Competências</b></span><span class="arw" aria-hidden="true">→</span></a>
+        </div>
+        <a class="back" href="#orgaos">← Voltar a Órgãos Municipais</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-presidente" data-route="presidente">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#orgaos">Órgãos Municipais</a><span class="sep">›</span><a href="#camara">Câmara Municipal</a><span class="sep">›</span><span aria-current="page">Presidente</span></nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Câmara Municipal"><p>Câmara Municipal</p><a href="#presidente" class="active" aria-current="page">Presidente</a><a href="#vereacao">Vereação</a><a href="#competencias-camara">Competências</a></aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Câmara Municipal</p><h1 tabindex="-1">Presidente</h1></div>
+        <div class="prose">
+          <p><strong>Filipe Alexandre Soares de Oliveira</strong></p>
+          <p>Filipe Alexandre Soares de Oliveira é natural de Vieira do Minho e reside na freguesia do Mosteiro.</p>
+          <p>Tem 40 anos e é licenciado em Radiologia e Técnico Superior de Diagnóstico e Terapêutica no Hospital de Braga.</p>
+          <p>Na política, foi presidente da Assembleia de Freguesia de Vieira do Minho, membro da Assembleia Municipal, integrou a Assembleia Intermunicipal da CIM do Ave e foi administrador da Empresa Municipal Vieira Cultura e Turismo.</p>
+          <p>No associativismo, foi Presidente do Vieira Futsal e Vice-Presidente do Vieira Sport Clube. Atualmente, exerce funções como Vice-Presidente da Assembleia Geral da Santa Casa da Misericórdia de Vieira do Minho, Vice-Presidente do CAVA – Clube Amigos de Vieira e também de Vice-Presidente da Assembleia Geral da ANDDI Portugal – Associação Nacional de Desportivo para o Desenvolvimento Intelectual.</p>
+          <p>Em 2021, foi candidato à Câmara Municipal de Vieira do Minho, tendo sido eleito Vereador, sem pelouro. Assumiu o cargo de Presidente do Município de Vieira do Minho em 31 de Outubro de 2025.</p>
+          <p><strong>Contacto:</strong> <a href="mailto:presidente@cm-vminho.pt">presidente@cm-vminho.pt</a></p>
+        </div>
+        <a class="back" href="#camara">← Voltar à Câmara Municipal</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-vereacao" data-route="vereacao">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#orgaos">Órgãos Municipais</a><span class="sep">›</span><a href="#camara">Câmara Municipal</a><span class="sep">›</span><span aria-current="page">Vereação</span></nav>
+    <div class="page-head"><p class="eyebrow">Câmara Municipal</p><h1 tabindex="-1">Vereação</h1></div>
+    <div class="ph-note">Conteúdo em atualização</div>
+    <a class="back" href="#camara">← Voltar à Câmara Municipal</a>
+  </div>
+</div>
+
+<div class="view" id="view-competencias-camara" data-route="competencias-camara">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#orgaos">Órgãos Municipais</a><span class="sep">›</span><a href="#camara">Câmara Municipal</a><span class="sep">›</span><span aria-current="page">Competências</span></nav>
+    <div class="page-head"><p class="eyebrow">Câmara Municipal</p><h1 tabindex="-1">Competências</h1></div>
+    <div class="ph-note">Conteúdo em atualização</div>
+    <a class="back" href="#camara">← Voltar à Câmara Municipal</a>
+  </div>
+</div>
+
+<div class="view" id="view-assembleia" data-route="assembleia">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#orgaos">Órgãos Municipais</a><span class="sep">›</span><span aria-current="page">Assembleia Municipal</span></nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Assembleia Municipal"><p>Assembleia Municipal</p><a href="#desc-assembleia">Descrição e Competências</a><a href="#composicao-assembleia">Composição da Mesa</a><a href="#eleitos-assembleia">Eleitos</a></aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Órgãos Municipais</p><h1 tabindex="-1">Assembleia Municipal</h1></div>
+        <div class="nav-cards cols-3">
+          <a class="nav-card" href="#desc-assembleia"><span class="lc"><span class="ic" aria-hidden="true">📜</span><b>Descrição e Competências</b></span><span class="arw" aria-hidden="true">→</span></a>
+          <a class="nav-card" href="#composicao-assembleia"><span class="lc"><span class="ic" aria-hidden="true">👥</span><b>Composição da Mesa</b></span><span class="arw" aria-hidden="true">→</span></a>
+          <a class="nav-card" href="#eleitos-assembleia"><span class="lc"><span class="ic" aria-hidden="true">🗳️</span><b>Eleitos</b></span><span class="arw" aria-hidden="true">→</span></a>
+        </div>
+        <a class="back" href="#orgaos">← Voltar a Órgãos Municipais</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-desc-assembleia" data-route="desc-assembleia">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#orgaos">Órgãos Municipais</a><span class="sep">›</span><a href="#assembleia">Assembleia Municipal</a><span class="sep">›</span><span aria-current="page">Descrição e Competências</span></nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Assembleia Municipal"><p>Assembleia Municipal</p><a href="#desc-assembleia" class="active" aria-current="page">Descrição e Competências</a><a href="#composicao-assembleia">Composição da Mesa</a><a href="#eleitos-assembleia">Eleitos</a></aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Assembleia Municipal</p><h1 tabindex="-1">Descrição e Competências da Assembleia Municipal</h1></div>
+        <div class="prose">
+          <p>A Assembleia Municipal do Concelho de Vieira do Minho, órgão deliberativo do Município, que resultou das últimas eleições autárquicas é composta por 37 membros, dos quais 21 foram eleitos diretamente através de sufrágio popular e 16 representam a respetiva Junta de Freguesia ou União de Freguesias.</p>
+          <p>As competências da assembleia municipal são as constantes do art.º 25º do anexo I, da Lei 75/2013, de 12 de setembro, designadamente:</p>
+          <ul class="plain">
+            <li>a) Aprovar as opções do plano e a proposta de orçamento, bem como as respetivas revisões</li>
+            <li>b) Aprovar as taxas do município e fixar o respetivo valor</li>
+            <li>c) Deliberar em matéria de exercício dos poderes tributários do município</li>
+            <li>d) Fixar anualmente o valor da taxa do imposto municipal sobre imóveis, bem como autorizar o lançamento de derramas</li>
+            <li>e) Autorizar a contratação de empréstimos</li>
+            <li>f) Aprovar as posturas e os regulamentos com eficácia externa do município</li>
+            <li>g) Aprovar os planos e demais instrumentos estratégicos necessários à prossecução das atribuições do município</li>
+            <li>h) Autorizar a câmara municipal a adquirir, alienar ou onerar bens imóveis de valor superior a 1000 vezes a RMMG</li>
+            <li>i) Deliberar sobre formas de apoio às freguesias no quadro da promoção e salvaguarda articulada dos interesses próprios das populações</li>
+            <li>j) Aprovar a criação ou reorganização dos serviços municipais</li>
+            <li>k) Deliberar sobre a criação de serviços municipalizados</li>
+            <li>l) Aprovar os mapas de pessoal dos serviços municipais</li>
+            <li>m) Aprovar as normas, delimitações e medidas previstas nos regimes do ordenamento do território e do urbanismo</li>
+            <li>n) Deliberar sobre a criação do conselho local de educação</li>
+            <li>o) Autorizar a geminação do município com outros municípios ou entidades equiparadas de outros países</li>
+          </ul>
+        </div>
+        <a class="back" href="#assembleia">← Voltar à Assembleia Municipal</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-composicao-assembleia" data-route="composicao-assembleia">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#orgaos">Órgãos Municipais</a><span class="sep">›</span><a href="#assembleia">Assembleia Municipal</a><span class="sep">›</span><span aria-current="page">Composição da Mesa</span></nav>
+    <div class="page-head"><p class="eyebrow">Assembleia Municipal</p><h1 tabindex="-1">Composição da Mesa</h1></div>
+    <div class="ph-note">Conteúdo em atualização</div>
+    <a class="back" href="#assembleia">← Voltar à Assembleia Municipal</a>
+  </div>
+</div>
+
+<div class="view" id="view-eleitos-assembleia" data-route="eleitos-assembleia">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#orgaos">Órgãos Municipais</a><span class="sep">›</span><a href="#assembleia">Assembleia Municipal</a><span class="sep">›</span><span aria-current="page">Eleitos</span></nav>
+    <div class="page-head"><p class="eyebrow">Assembleia Municipal</p><h1 tabindex="-1">Eleitos</h1></div>
+    <div class="ph-note">Conteúdo em atualização</div>
+    <a class="back" href="#assembleia">← Voltar à Assembleia Municipal</a>
+  </div>
+</div>
+
+<!-- ===================== MUNICÍPIO ===================== -->
+<div class="view" id="view-municipio" data-route="municipio">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><span aria-current="page">Município</span></nav>
+    <div class="page-head"><p class="eyebrow">Município</p><h1 tabindex="-1">Município</h1></div>
+    <div class="prose"><p>Mantenha-se atualizado no que concerne a toda a informação sobre a sua autarquia: estrutura, organização, informação económico-financeira, documentos diversos, entre outros.</p></div>
+    <div class="nav-cards cols-3">
+      <a class="nav-card" href="#servicos"><span class="lc"><span class="ic" aria-hidden="true">🏢</span><b>Serviços e Divisões</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#comunidade"><span class="lc"><span class="ic" aria-hidden="true">🤝</span><b>Comunidade</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#projetos"><span class="lc"><span class="ic" aria-hidden="true">📁</span><b>Projetos Municipais</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#documentos"><span class="lc"><span class="ic" aria-hidden="true">📄</span><b>Documentos e Relatórios</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#equipamentos"><span class="lc"><span class="ic" aria-hidden="true">🏗️</span><b>Equipamentos Municipais</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#protecao-civil"><span class="lc"><span class="ic" aria-hidden="true">🚒</span><b>Proteção Civil</b></span><span class="arw" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-servicos" data-route="servicos">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#municipio">Município</a><span class="sep">›</span><span aria-current="page">Serviços e Divisões</span></nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Município"><p>Município</p><a href="#servicos" class="active" aria-current="page">Serviços e Divisões</a><a href="#comunidade">Comunidade</a><a href="#projetos">Projetos Municipais</a><a href="#documentos">Documentos e Relatórios</a><a href="#equipamentos">Equipamentos Municipais</a><a href="#protecao-civil">Proteção Civil</a></aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Município</p><h1 tabindex="-1">Serviços e Divisões</h1></div>
+        <div class="prose"><p>Conheça a estrutura orgânica dos serviços e divisões do Município de Vieira do Minho.</p></div>
+        <div class="info-grid">
+          <div class="info-card"><h3>Gabinete de Apoio à Presidência</h3><p>Apoio direto ao Presidente do Município nas suas funções executivas e de representação.</p></div>
+          <div class="info-card"><h3>Veterinário Municipal</h3><p>Assegura as competências legalmente atribuídas ao Município no domínio da higiene pública veterinária. Colabora com os diversos serviços municipais ao nível da sanidade animal, inspeção, controlo e fiscalização higio-sanitária, inspeção das condições de higiene em locais de concentração pública, profilaxia e vigilância epidemiológica.</p></div>
+          <div class="info-card"><h3>Turismo, Cultura, Educação e Desporto</h3><p>Gestão das atividades culturais, desportivas, educativas e turísticas do concelho.</p></div>
+          <div class="info-card"><h3>Polícia Municipal</h3><p>Serviço de fiscalização e segurança municipal ao serviço dos munícipes.</p></div>
+          <div class="info-card"><h3>Proteção Civil</h3><p>Coordenação e gestão das situações de emergência e proteção civil no concelho.</p></div>
+          <div class="info-card"><h3>Gabinete Técnico Florestal</h3><p>Gestão e prevenção florestal no território concelhio.</p></div>
+          <div class="info-card"><h3>Divisão de Administração</h3><p>Gestão administrativa e de recursos humanos do município.</p></div>
+          <div class="info-card"><h3>Divisão Financeira</h3><p>Gestão económico-financeira e contabilística do município.</p></div>
+          <div class="info-card"><h3>Divisão de Ação Social</h3><p>Serviços de ação social, educação e cultura para a comunidade.</p></div>
+          <div class="info-card"><h3>Planeamento Urbanístico e Obras Particulares</h3><p>Licenciamento, planeamento urbanístico e fiscalização de obras particulares.</p></div>
+          <div class="info-card"><h3>Divisão de Obras Municipais</h3><p>Planeamento, execução e manutenção das obras e infraestruturas municipais.</p></div>
+        </div>
+        <a class="back" href="#municipio">← Voltar ao Município</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-comunidade" data-route="comunidade">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#municipio">Município</a><span class="sep">›</span><span aria-current="page">Comunidade</span></nav>
+    <div class="page-head"><p class="eyebrow">Município</p><h1 tabindex="-1">Comunidade</h1></div>
+    <div class="ph-note">Conteúdo em atualização</div>
+    <a class="back" href="#municipio">← Voltar ao Município</a>
+  </div>
+</div>
+
+<div class="view" id="view-projetos" data-route="projetos">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#municipio">Município</a><span class="sep">›</span><span aria-current="page">Projetos Municipais</span></nav>
+    <div class="page-head"><p class="eyebrow">Município</p><h1 tabindex="-1">Projetos Municipais</h1></div>
+    <div class="ph-note">Conteúdo em atualização</div>
+    <a class="back" href="#municipio">← Voltar ao Município</a>
+  </div>
+</div>
+
+<div class="view" id="view-documentos" data-route="documentos">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#municipio">Município</a><span class="sep">›</span><span aria-current="page">Documentos e Relatórios</span></nav>
+    <div class="page-head"><p class="eyebrow">Município</p><h1 tabindex="-1">Documentos e Relatórios</h1></div>
+    <div class="ph-note">Conteúdo em atualização</div>
+    <a class="back" href="#municipio">← Voltar ao Município</a>
+  </div>
+</div>
+
+<div class="view" id="view-equipamentos" data-route="equipamentos">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#municipio">Município</a><span class="sep">›</span><span aria-current="page">Equipamentos Municipais</span></nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Município"><p>Município</p><a href="#servicos">Serviços e Divisões</a><a href="#comunidade">Comunidade</a><a href="#projetos">Projetos Municipais</a><a href="#documentos">Documentos e Relatórios</a><a href="#equipamentos" class="active" aria-current="page">Equipamentos Municipais</a><a href="#protecao-civil">Proteção Civil</a></aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Município</p><h1 tabindex="-1">Equipamentos Municipais</h1></div>
+        <div class="prose"><p>O Município de Vieira do Minho dispõe de um conjunto de equipamentos ao serviço dos munícipes e visitantes.</p></div>
+        <div class="info-grid">
+          <div class="info-card"><span class="ic" aria-hidden="true">🏟️</span><h3>Estádio Municipal de Vieira do Minho</h3><p>Equipamento desportivo ao serviço das modalidades e eventos desportivos do concelho.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">📚</span><h3>Biblioteca Municipal Padre Alves Vieira</h3><p>Espaço de cultura e saber ao serviço da comunidade, com acervo bibliográfico e atividades culturais.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🎭</span><h3>Auditório Municipal de Vieira do Minho</h3><p>Espaço de eventos culturais, conferências e espetáculos com capacidade para grandes audiências.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🏛️</span><h3>Casa da Cultura — Casa de Lamas</h3><p>Espaço de promoção e divulgação da cultura local e regional.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🏊</span><h3>Piscinas Municipais</h3><p>Instalações aquáticas para prática desportiva e lazer da população.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🏀</span><h3>Pavilhão Polidesportivo Municipal Prof. Aníbal Nascimento</h3><p>Pavilhão multiusos para a prática de diversas modalidades desportivas.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">ℹ️</span><h3>Posto de Turismo</h3><p>Espaço de informação e acolhimento turístico, com venda de produtos artesanais locais.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">⛺</span><h3>Parque de Campismo da Cabreira</h3><p>Espaço de lazer e campismo integrado na beleza natural da Serra da Cabreira.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">⛵</span><h3>Barco Turístico — O Brancelhe</h3><p>Passeios turísticos nas barragens do concelho, proporcionando vistas únicas sobre a paisagem serrana.</p></div>
+        </div>
+        <a class="back" href="#municipio">← Voltar ao Município</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-protecao-civil" data-route="protecao-civil">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#municipio">Município</a><span class="sep">›</span><span aria-current="page">Proteção Civil</span></nav>
+    <div class="page-head"><p class="eyebrow">Município</p><h1 tabindex="-1">Proteção Civil</h1></div>
+    <div class="ph-note">Conteúdo em atualização</div>
+    <a class="back" href="#municipio">← Voltar ao Município</a>
+  </div>
+</div>
+
+<!-- ===================== TURISMO ===================== -->
+<div class="view" id="view-turismo" data-route="turismo">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><span aria-current="page">Turismo</span></nav>
+    <div class="page-head"><p class="eyebrow">Turismo</p><h1 tabindex="-1">Turismo</h1></div>
+    <div class="prose">
+      <p>O Concelho de Vieira do Minho possui grandes potencialidades que têm sido alvo de aproveitamento turístico.</p>
+      <p>O recurso mais emblemático deste concelho é a sua paisagem. As paisagens que aqui existem, desenhadas com as mais belas cores que os mestres têm nas suas paletas, avassalam pela sua magnitude e pelo seu brilho.</p>
+      <p>São, aliás, estas paisagens deslumbrantes o enquadramento para momentos de lazer diversificados, nomeadamente a prática de BTT, pedestrianismo, orientação, paintball, tiro com arco, escalada, entre outros. Há ainda os lagos azuis que contrastam com o verde e o cinzento granítico da serra. Lagos esses onde deambula o barco de recreio e se desliza no cabo de ski.</p>
+      <p>O património, na sua beleza rude e austera, acolhe hoje unidades de turismo em espaço rural, onde o conforto proporcionado permite ao visitante o deleitoso convívio, entre a modernidade e a tradição.</p>
+      <p>A cultura das nossas gentes passa também pela excelência gastronómica. São inúmeros os pratos que são confecionados recorrendo à tradicional vitela barrosã, ao cabrito e aos produtos hortícolas. Não esqueçamos o delicioso queijo e o inconfundível mel.</p>
+    </div>
+    <div class="nav-cards cols-3">
+      <a class="nav-card" href="#conhecer"><span class="lc"><span class="ic" aria-hidden="true">🌄</span><b>Conhecer Vieira do Minho</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#campismo"><span class="lc"><span class="ic" aria-hidden="true">⛺</span><b>Parque de Campismo</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#onde-comer"><span class="lc"><span class="ic" aria-hidden="true">🍽️</span><b>Onde Comer</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#onde-dormir"><span class="lc"><span class="ic" aria-hidden="true">🛏️</span><b>Onde Dormir</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#roteiro"><span class="lc"><span class="ic" aria-hidden="true">🥾</span><b>Roteiro Serra da Cabreira</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#lazer"><span class="lc"><span class="ic" aria-hidden="true">🎯</span><b>Lazer</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#artesanato"><span class="lc"><span class="ic" aria-hidden="true">🪵</span><b>Artesanato</b></span><span class="arw" aria-hidden="true">→</span></a>
+      <a class="nav-card" href="#gastronomia"><span class="lc"><span class="ic" aria-hidden="true">🥩</span><b>Gastronomia</b></span><span class="arw" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-conhecer" data-route="conhecer">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#turismo">Turismo</a><span class="sep">›</span><span aria-current="page">Conhecer Vieira do Minho</span></nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Turismo"><p>Turismo</p><a href="#conhecer" class="active" aria-current="page">Conhecer Vieira do Minho</a><a href="#campismo">Parque de Campismo</a><a href="#onde-comer">Onde Comer</a><a href="#onde-dormir">Onde Dormir</a><a href="#roteiro">Roteiro Serra da Cabreira</a><a href="#lazer">Lazer</a><a href="#artesanato">Artesanato</a><a href="#gastronomia">Gastronomia</a></aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Turismo</p><h1 tabindex="-1">Conhecer Vieira do Minho</h1></div>
+        <div class="prose">
+          <p><strong>Venha conhecer esta terra de encantos!</strong></p>
+          <p>O Concelho de Vieira do Minho possui grandes potencialidades que têm sido alvo de aproveitamento turístico.</p>
+          <p>O recurso mais emblemático deste concelho é a sua paisagem. As paisagens que aqui existem, desenhadas com as mais belas cores que os mestres têm nas suas paletas avassalam pela sua magnitude e pelo seu brilho.</p>
+          <p>São aliás estas paisagens deslumbrantes, o enquadramento para momentos de lazer diversificados, nomeadamente a prática de BTT, pedestrianismo, orientação, paintball, tiro com arco, escalada. Há ainda os lagos azuis que contrastam com o verde e o cinzento granítico da serra, estes lagos onde deambula o barco de recreio e se desliza no teleski.</p>
+          <p>O património, na sua beleza rude e austera, acolhe hoje unidades de turismo em espaço rural, onde o conforto proporcionado permite ao visitante o deleitoso convívio entre a modernidade e a tradição.</p>
+          <p>A cultura das nossas gentes passa também pela excelente gastronomia. São inúmeros os pratos que são confecionados recorrendo à tradicional vitela barrosã, ao cabrito, aos produtos hortícolas. Não esqueçamos o delicioso e inconfundível mel!</p>
+          <p>Não deixe ainda de ajudar a sua memória e quando partir leve consigo um dos inúmeros produtos artesanais que se encontram à venda no Posto de Turismo de Vieira do Minho.</p>
+          <p>Tocar e sentir também é recordar.</p>
+        </div>
+        <a class="back" href="#turismo">← Voltar ao Turismo</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-campismo" data-route="campismo">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#turismo">Turismo</a><span class="sep">›</span><span aria-current="page">Parque de Campismo da Cabreira</span></nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Turismo"><p>Turismo</p><a href="#conhecer">Conhecer Vieira do Minho</a><a href="#campismo" class="active" aria-current="page">Parque de Campismo</a><a href="#onde-comer">Onde Comer</a><a href="#onde-dormir">Onde Dormir</a><a href="#roteiro">Roteiro Serra da Cabreira</a><a href="#lazer">Lazer</a><a href="#artesanato">Artesanato</a><a href="#gastronomia">Gastronomia</a></aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Turismo</p><h1 tabindex="-1">Parque de Campismo da Cabreira</h1></div>
+        <div class="prose"><p>O Parque de Campismo da Cabreira situa-se integrado na beleza natural da Serra da Cabreira, oferecendo um espaço de lazer e descanso em plena natureza. Rodeado de paisagens serranas deslumbrantes, é o ponto de partida ideal para explorar os trilhos e percursos pedestres da região.</p></div>
+        <ul class="facts">
+          <li>📍 Serra da Cabreira, Vieira do Minho</li>
+          <li>📞 T. 253 649 270</li>
+          <li>🌿 Integrado na Serra da Cabreira</li>
+          <li>🥾 Acesso a trilhos pedestres</li>
+        </ul>
+        <a class="back" href="#turismo">← Voltar ao Turismo</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-onde-comer" data-route="onde-comer">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#turismo">Turismo</a><span class="sep">›</span><span aria-current="page">Onde Comer</span></nav>
+    <div class="page-head"><p class="eyebrow">Turismo</p><h1 tabindex="-1">Onde Comer</h1></div>
+    <div class="ph-note">Conteúdo em atualização</div>
+    <a class="back" href="#turismo">← Voltar ao Turismo</a>
+  </div>
+</div>
+
+<div class="view" id="view-onde-dormir" data-route="onde-dormir">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#turismo">Turismo</a><span class="sep">›</span><span aria-current="page">Onde Dormir</span></nav>
+    <div class="page-head"><p class="eyebrow">Turismo</p><h1 tabindex="-1">Onde Dormir</h1></div>
+    <div class="ph-note">Conteúdo em atualização</div>
+    <a class="back" href="#turismo">← Voltar ao Turismo</a>
+  </div>
+</div>
+
+<div class="view" id="view-roteiro" data-route="roteiro">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#turismo">Turismo</a><span class="sep">›</span><span aria-current="page">Roteiro da Serra da Cabreira</span></nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Turismo"><p>Turismo</p><a href="#conhecer">Conhecer Vieira do Minho</a><a href="#campismo">Parque de Campismo</a><a href="#onde-comer">Onde Comer</a><a href="#onde-dormir">Onde Dormir</a><a href="#roteiro" class="active" aria-current="page">Roteiro Serra da Cabreira</a><a href="#lazer">Lazer</a><a href="#artesanato">Artesanato</a><a href="#gastronomia">Gastronomia</a></aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Turismo</p><h1 tabindex="-1">Roteiro da Serra da Cabreira</h1></div>
+        <div class="prose">
+          <p>O roteiro essencial para quem visita a Serra da Cabreira.</p>
+          <p>Seja a pé, de BTT ou de viatura, a Serra da Cabreira é passagem obrigatória para quem visita Vieira do Minho. Pelas suas encostas e nas margens dos seus rios e ribeiros abrem-se caminhos para cenários naturais que transbordam de beleza. Cada estação do ano proporciona novos encantos e novos desafios.</p>
+          <p>Propomos-lhe que percorra a Serra da Cabreira através das nossas sugestões de visita e descubra locais moldados pela Natureza e pelo Homem ao longo dos séculos.</p>
+        </div>
+        <div class="info-grid">
+          <div class="info-card"><span class="ic" aria-hidden="true">🏔️</span><h3>Cume da Cabreira</h3><p>Ponto mais elevado do concelho, com vista panorâmica sobre o Minho e Trás-os-Montes</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🐺</span><h3>Fojos da Cabreira</h3><p>Armadilhas medievais de caça ao lobo, património arqueológico único</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">💧</span><h3>Barragem de Vilarinho das Furnas</h3><p>Lago artificial de beleza singular integrado na paisagem serrana</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🌿</span><h3>Trilhos Pedestres</h3><p>Percursos sinalizados por entre a flora e fauna da serra</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🏕️</span><h3>Parque de Campismo da Cabreira</h3><p>Base de operações para a exploração da serra</p></div>
+        </div>
+        <a class="back" href="#turismo">← Voltar ao Turismo</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-lazer" data-route="lazer">
+  <div class="wrap concelho-landing">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#turismo">Turismo</a><span class="sep">›</span><span aria-current="page">Lazer</span></nav>
+    <div class="page-head"><p class="eyebrow">Turismo</p><h1 tabindex="-1">Lazer</h1></div>
+    <div class="ph-note">Conteúdo em atualização</div>
+    <a class="back" href="#turismo">← Voltar ao Turismo</a>
+  </div>
+</div>
+
+<div class="view" id="view-artesanato" data-route="artesanato">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#turismo">Turismo</a><span class="sep">›</span><span aria-current="page">Artesanato</span></nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Turismo"><p>Turismo</p><a href="#conhecer">Conhecer Vieira do Minho</a><a href="#campismo">Parque de Campismo</a><a href="#onde-comer">Onde Comer</a><a href="#onde-dormir">Onde Dormir</a><a href="#roteiro">Roteiro Serra da Cabreira</a><a href="#lazer">Lazer</a><a href="#artesanato" class="active" aria-current="page">Artesanato</a><a href="#gastronomia">Gastronomia</a></aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Turismo</p><h1 tabindex="-1">Artesanato</h1></div>
+        <div class="prose">
+          <p>O artesanato caracteriza-se por uma simplicidade de todo o processo de produção que permite a concentração de uma só pessoa, desde a conceção e desenvolvimento até à contemplação final da obra e seu destino, tornando-se assim o artesão no único responsável pela obra.</p>
+          <p>O artesanato de Vieira do Minho é caracterizado essencialmente pelo <strong>trabalho em cobre</strong>. Ainda hoje é possível encontrar algumas oficinas de artesãos que trabalham este metal.</p>
+          <p>Além do Artesanato em Cobre, existe ainda o artesanato de <strong>tecelagem e bordados tradicionais</strong>, que conhecem hoje um considerável vigor, tendo vindo a aumentar o número daqueles que a eles se dedicam.</p>
+          <p>A <strong>cestaria</strong>, apesar de ser uma "arte" menos expressiva no Concelho, também pode ser encontrada em alguns pontos do concelho, nomeadamente em Parada de Bouro.</p>
+          <p><strong>Artesãos do Concelho:</strong></p>
+        </div>
+        <div class="chips">
+          <span class="chip">José Moreira</span>
+          <span class="chip">Bernardino Alves</span>
+          <span class="chip">Simarcob</span>
+          <span class="chip">Basílio Fernandes</span>
+          <span class="chip">Maria da Conceição / Maria Julieta</span>
+          <span class="chip">Flor do Linho</span>
+        </div>
+        <a class="back" href="#turismo">← Voltar ao Turismo</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-gastronomia" data-route="gastronomia">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Caminho de navegação"><a href="#home">Início</a><span class="sep">›</span><a href="#turismo">Turismo</a><span class="sep">›</span><span aria-current="page">Gastronomia</span></nav>
+    <div class="concelho-layout">
+      <aside class="side-menu" aria-label="Turismo"><p>Turismo</p><a href="#conhecer">Conhecer Vieira do Minho</a><a href="#campismo">Parque de Campismo</a><a href="#onde-comer">Onde Comer</a><a href="#onde-dormir">Onde Dormir</a><a href="#roteiro">Roteiro Serra da Cabreira</a><a href="#lazer">Lazer</a><a href="#artesanato">Artesanato</a><a href="#gastronomia" class="active" aria-current="page">Gastronomia</a></aside>
+      <div>
+        <div class="page-head"><p class="eyebrow">Turismo</p><h1 tabindex="-1">Gastronomia</h1></div>
+        <div class="prose"><p>A gastronomia vieirense reflete a riqueza dos produtos locais e a tradição culinária minhota. Os pratos são confecionados recorrendo à tradicional vitela barrosã, ao cabrito e aos produtos hortícolas da região.</p></div>
+        <div class="info-grid">
+          <div class="info-card"><span class="ic" aria-hidden="true">🥩</span><h3>Vitela Barrosã</h3><p>A Gastronomia Vieirense tem o seu expoente máximo na Vitela Barrosã, sendo um dos ex-líbris do concelho e dos pratos mais apreciados e procurados pela gente da terra e pelos visitantes. Em naco, grelhada ou assada, a vitela é uma deliciosa tentação e expressão de bem receber. Em Vieira do Minho, o gado de origem Barrosã pastoreia grande parte do ano nas encostas e prados da Serra da Cabreira, o que lhe confere um sabor único e uma textura tenra e suculenta.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🥬</span><h3>Couves com Feijão</h3><p>Prato tradicional da cozinha minhota, confeccionado com couves frescas e feijão da região, símbolo da alimentação simples e nutritiva das gentes da serra.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🍯</span><h3>Mel</h3><p>O mel de Vieira do Minho é reconhecido pela sua qualidade e sabor inconfundível, produzido nas encostas da Serra da Cabreira onde as abelhas encontram uma flora diversificada e pristina.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🫙</span><h3>Barquilheres</h3><p>Doce tradicional da região, confeccionado segundo receitas ancestrais transmitidas de geração em geração.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🥓</span><h3>Fumeiro</h3><p>Os enchidos e fumeiros da região são produzidos de forma artesanal, seguindo receitas tradicionais que preservam os sabores autênticos do Minho.</p></div>
+          <div class="info-card"><span class="ic" aria-hidden="true">🫘</span><h3>Feijão Amarelo</h3><p>Variedade local de feijão, base de muitos pratos tradicionais da gastronomia vieirense.</p></div>
+        </div>
+        <a class="back" href="#turismo">← Voltar ao Turismo</a>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer class="site"><div class="wrap">
+  <section class="newsletter" aria-label="Subscrição da newsletter">
+    <div>
+      <h3>Newsletter</h3>
+      <p>Receba as novidades e os destaques do Município de Vieira do Minho diretamente no seu e-mail.</p>
+    </div>
+    <form class="nl-form" onsubmit="return false">
+      <label for="nl-email" style="position:absolute;left:-9999px">Endereço de e-mail</label>
+      <input id="nl-email" type="email" placeholder="O seu endereço de e-mail" required>
+      <button type="submit">Subscrever</button>
+    </form>
+  </section>
+  <div class="badges">
+    <span class="badge">Norte 2030</span>
+    <span class="badge">Portugal 2030</span>
+    <span class="badge">União Europeia</span>
+    <span class="badge">Acessibilidade · WCAG 2.1 AA</span>
+  </div>
+  <div class="row">
+    <span>© Município de Vieira do Minho · protótipo (conteúdo de exemplo)</span>
+    <span><a href="#">Política de Privacidade</a> · <a href="#">Mapa do Portal</a> · Desenvolvido por [o teu estúdio]</span>
+  </div>
+</div></footer>
+
+<script>
+// Toggle A/A (acessibilidade) — persiste com fallback seguro
+(function(){
+  var btns=document.querySelectorAll('.aa button');
+  function apply(fs){document.documentElement.style.setProperty('--fs',fs);}
+  try{var saved=localStorage.getItem('vm-fs');if(saved){apply(saved);btns.forEach(function(b){b.setAttribute('aria-pressed',b.dataset.fs===saved);});}}catch(e){}
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    apply(b.dataset.fs);
+    btns.forEach(function(x){x.setAttribute('aria-pressed','false');});
+    b.setAttribute('aria-pressed','true');
+    try{localStorage.setItem('vm-fs',b.dataset.fs);}catch(e){}
+  });});
+})();
+// Menu mobile (placeholder de comportamento)
+document.querySelector('.burger').addEventListener('click',function(){
+  var n=document.querySelector('nav.main');
+  var open=n.style.display==='block';
+  n.style.display=open?'':'block';
+  this.setAttribute('aria-expanded',!open);
+});
+// ---- Router de hash (subpáginas do Concelho) ----
+(function(){
+  var views=document.querySelectorAll('.view');
+  var routes=Array.prototype.map.call(views,function(v){return v.dataset.route;});
+  function show(route){
+    if(routes.indexOf(route)===-1) route='home';
+    views.forEach(function(v){v.classList.toggle('is-active',v.dataset.route===route);});
+    window.scrollTo(0,0);
+    if(route!=='home'){ // anuncia a nova página a leitores de ecrã, sem roubar foco no arranque
+      var h=document.querySelector('.view.is-active h1[tabindex]');
+      if(h) h.focus({preventScroll:true});
+    }
+  }
+  function current(){return (location.hash||'#home').slice(1);}
+  window.addEventListener('hashchange',function(){show(current());});
+  show(current());
+})();
+</script>
+</body>
+</html>
